@@ -56,7 +56,8 @@ def add_transaction(api_response):
     return tmp_transaction
 
 def get_transactions(connectCode):
-    data = list()
+    data = dict()
+    data['datapoints'] = list()
 
     loss = 0
     last_loss = 0
@@ -75,10 +76,13 @@ def get_transactions(connectCode):
             cur_streak = rank.UpdateCount - last_loss
             max_streak = max(max_streak, cur_streak)
 
-        data.append((rank.Rank))
+        data['datapoints'].append((round(rank.Rank, 1)))
 
+    data['rank'] = round(user.CurrentRank,1)
+    data['latestchange'] = data['datapoints'][-1] - data['datapoints'][-2]
+    data['latestchange'] = round(data['latestchange'],1)
+    data['maxstreak'] = max_streak
     user.CurrentStreak = cur_streak
     user.MaxStreak = max_streak
     db.session.commit()
-    print(data, max_streak)
     return data
