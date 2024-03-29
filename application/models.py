@@ -22,6 +22,9 @@ class User(db.Model):
     UpdateCount: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
     MaxStreak: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
     CurrentStreak: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
+    Continent: so.Mapped[str] = so.mapped_column(sqla.String(16), nullable=True)
+    GlobalRank: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
+    RegionalRank: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
     #transactions = so.Mapped[List["Transaction"]] = db.relationship()
 
     #TransactionKey: so.Mapped[Optional[int]] = so.mapped_column(sqla.ForeignKey("Transactions.id"))

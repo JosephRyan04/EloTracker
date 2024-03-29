@@ -35,7 +35,10 @@ def update_user(api_response):
     query = sa.update(User).where(User.ConnectCode
                                    == api_response['code']).values(CurrentRank = api_response['ratingOrdinal'],
                                                                     UpdateCount = api_response['updateCount'],
-                                                                    DisplayName = api_response['displayName'])
+                                                                    DisplayName = api_response['displayName'],
+                                                                    Continent = api_response['continent'],
+                                                                    RegionalRank = api_response['regionalRank'],
+                                                                    GlobalRank = api_response['globalRank'])
     user = db.session.execute(query)
     db.session.commit()
 
