@@ -81,12 +81,17 @@ def get_transactions(connectCode):
 
         data['datapoints'].append((round(rank.Rank, 1)))
     
+    data['code'] = user.ConnectCode
     data['updatecount'] = user.UpdateCount
     data['globalrank'] = user.GlobalRank
     data['regionalrank'] = user.RegionalRank
     data['continent'] = user.Continent
     data['rank'] = round(user.CurrentRank,1)
-    data['latestchange'] = data['datapoints'][-1] - data['datapoints'][-2]
+    data['latestchange'] = 0
+    if len(user.transactions) > 1: 
+        data['latestchange'] = data['datapoints'][-1] - data['datapoints'][-2]
+
+    
     data['latestchange'] = round(data['latestchange'],1)
     data['maxstreak'] = max_streak
     user.CurrentStreak = cur_streak

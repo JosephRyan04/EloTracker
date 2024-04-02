@@ -3,6 +3,7 @@ GET http://localhost:5000/api/update-elo/wens-890
 
 GET http://localhost:5000/api/update-elo/matw-444
 GET http://localhost:5000/api/update-elo/cwax-450
+GET http://localhost:5000/api/update-elo/bob-283
 
 GET http://localhost:5000/api/getuser/cwax-450
 
