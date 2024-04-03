@@ -81,6 +81,8 @@ def get_transactions(connectCode):
 
         data['datapoints'].append((round(rank.Rank, 1)))
     
+    data['wins'] = user.transactions[-1].WinCount
+    data['losses'] = user.transactions[-1].LossCount
     data['code'] = user.ConnectCode
     data['updatecount'] = user.UpdateCount
     data['globalrank'] = user.GlobalRank
