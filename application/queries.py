@@ -1,6 +1,7 @@
 from application import app,db
 from application.models import User, Transaction
 import sqlalchemy as sa
+import json
 import random
 
 
@@ -61,6 +62,7 @@ def add_transaction(api_response):
 def get_transactions(connectCode):
     data = dict()
     data['datapoints'] = list()
+    data['timestamps'] = list()
 
     loss = 0
     last_loss = 0
@@ -80,6 +82,7 @@ def get_transactions(connectCode):
             max_streak = max(max_streak, cur_streak)
 
         data['datapoints'].append((round(rank.Rank, 1)))
+        data['timestamps'].append(rank.Timestamp)
     
     data['wins'] = user.transactions[-1].WinCount
     data['losses'] = user.transactions[-1].LossCount
@@ -99,4 +102,5 @@ def get_transactions(connectCode):
     user.CurrentStreak = cur_streak
     user.MaxStreak = max_streak
     db.session.commit()
-    return data
+    pyJson = json.dumps(data, default=str)
+    return pyJson
