@@ -41,6 +41,14 @@ def update_user(api_response):
                                                                     RegionalRank = api_response['regionalRank'],
                                                                     GlobalRank = api_response['globalRank'])
     user = db.session.execute(query)
+    user = get_user(api_response['code'])
+    if api_response['globalRank']:
+        if user.PeakGlobal is None:
+            user.PeakGlobal = api_response['globalRank']
+        else:
+            user.PeakGlobal = min(user.PeakGlobal, api_response['globalRank'])
+        
+
     db.session.commit()
 
     return "Success"
@@ -89,6 +97,7 @@ def get_transactions(connectCode):
     data['code'] = user.ConnectCode
     data['updatecount'] = user.UpdateCount
     data['globalrank'] = user.GlobalRank
+    data['peakplacement'] = user.PeakGlobal
     data['regionalrank'] = user.RegionalRank
     data['continent'] = user.Continent
     data['rank'] = round(user.CurrentRank,1)
@@ -103,4 +112,13 @@ def get_transactions(connectCode):
     user.MaxStreak = max_streak
     db.session.commit()
     pyJson = json.dumps(data, default=str)
+    return pyJson
+
+def get_leaderboard():
+    query = sa.select(User).order_by(User.CurrentRank.desc())
+    leaderboard = db.session.execute(query).scalars().fetchmany(3)
+    result = list()
+    for row in leaderboard:
+        result.append(row.as_dict())
+    pyJson = json.dumps(result)
     return pyJson

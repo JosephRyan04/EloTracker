@@ -1,4 +1,5 @@
 GET http://localhost:5000/api/update-elo/wens-890
+GET http://localhost:5000/api/update-elo/locked-0
 
 
 GET http://localhost:5000/api/update-elo/matw-444
@@ -17,3 +18,5 @@ GET http://localhost:5000/api/update-elo/matw-444
 GET http://localhost:5000/api/user-ranks?player=wens-890
 GET http://localhost:5000/api/user-ranks?player=cwax-450
 GET http://localhost:5000/api/user-ranks?player=matw-444
+
+GET http://localhost:5000/api/leaderboard

@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app
 from .api_call import hit_slippi_API
-from .queries import get_user, get_transactions
+from .queries import get_user, get_transactions, get_leaderboard
 from . import utils
 
 
@@ -49,3 +49,7 @@ def user_ranks():
     uid = request.args.get("player")
     uid = utils.format_cc(uid)
     return get_transactions(uid)
+
+@app.route('/api/leaderboard')
+def leaderboard():
+    return get_leaderboard()
