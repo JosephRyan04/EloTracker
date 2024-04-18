@@ -5,6 +5,8 @@ GET http://localhost:5000/api/update-elo/locked-0
 GET http://localhost:5000/api/update-elo/matw-444
 GET http://localhost:5000/api/update-elo/cwax-450
 GET http://localhost:5000/api/update-elo/bob-283
+GET http://localhost:5000/api/update-elo/cwax-450
+GET http://localhost:5000/api/update-elo/moj-383
 
 GET http://localhost:5000/api/getuser/cwax-450
 
@@ -19,4 +21,7 @@ GET http://localhost:5000/api/user-ranks?player=wens-890
 GET http://localhost:5000/api/user-ranks?player=cwax-450
 GET http://localhost:5000/api/user-ranks?player=matw-444
 
-GET http://localhost:5000/api/leaderboard
+GET http://localhost:5000/api/top-streak
+GET http://localhost:5000/api/top-ranked
+
+GET http://localhost:5000/api/random-user

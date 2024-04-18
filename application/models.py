@@ -14,7 +14,7 @@ class User(db.Model):
     __tablename__ = "Users"
 
     def as_dict(self):
-       return {'code': self.ConnectCode, 'displayName': self.DisplayName, 'rank': self.CurrentRank}
+       return {'code': self.ConnectCode, 'maxstreak': self.MaxStreak, 'rank': self.CurrentRank}
 
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     LastUpdate: so.Mapped[datetime] = so.mapped_column(

@@ -78,6 +78,8 @@ def get_transactions(connectCode):
     max_streak = 0
 
     user = get_user(connectCode)
+    if user is None:
+        return 'User not found', 404, {'ContentType':'text/html'}
     for rank in user.transactions:
 
         if rank.LossCount > loss:
@@ -114,7 +116,7 @@ def get_transactions(connectCode):
     pyJson = json.dumps(data, default=str)
     return pyJson
 
-def get_leaderboard():
+def top_ranked():
     query = sa.select(User).order_by(User.CurrentRank.desc())
     leaderboard = db.session.execute(query).scalars().fetchmany(3)
     result = list()
@@ -122,3 +124,18 @@ def get_leaderboard():
         result.append(row.as_dict())
     pyJson = json.dumps(result)
     return pyJson
+
+def top_streak():
+    query = sa.select(User).order_by(User.MaxStreak.desc())
+    leaderboard = db.session.execute(query).scalars().fetchmany(3)
+    result = list()
+    for row in leaderboard:
+        result.append(row.as_dict())
+    pyJson = json.dumps(result)
+    return pyJson
+
+def get_random_user():
+    query = sa.select(User).order_by(sa.func.random()).limit(1)
+    user = db.session.execute(query).scalar()
+    print(user.ConnectCode)
+    return json.dumps(user.ConnectCode)
