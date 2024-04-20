@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app
 from .api_call import hit_slippi_API
-from .queries import get_user, get_transactions, top_ranked, top_streak, get_random_user
+from .queries import get_user, get_transactions, leaderboard_by, get_random_user
 from . import utils
 
 
@@ -52,11 +52,15 @@ def user_ranks():
 
 @app.route('/api/top-ranked')
 def rank_leaderboard():
-    return top_ranked()
+    return leaderboard_by('CurrentRank')
 
 @app.route('/api/top-streak')
 def streak_leaderboard():
-    return top_streak()
+    return leaderboard_by('MaxStreak')
+
+@app.route('/api/most-games')
+def games_leaderboard():
+    return leaderboard_by('UpdateCount')
 
 @app.route('/api/random-user')
 def random_user():

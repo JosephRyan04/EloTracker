@@ -23,5 +23,6 @@ GET http://localhost:5000/api/user-ranks?player=matw-444
 
 GET http://localhost:5000/api/top-streak
 GET http://localhost:5000/api/top-ranked
+GET http://localhost:5000/api/most-games
 
 GET http://localhost:5000/api/random-user
