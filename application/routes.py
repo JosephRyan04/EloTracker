@@ -1,10 +1,9 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import  Flask, render_template, request
+from flask_cors import CORS, cross_origin
 from application import app
 from .api_call import hit_slippi_API
 from .queries import get_user, get_transactions, leaderboard_by, get_random_user
 from . import utils
-
-
 
 @app.route('/')
 @app.route('/index')
@@ -59,6 +58,7 @@ def streak_leaderboard():
     return leaderboard_by('MaxStreak')
 
 @app.route('/api/most-games')
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def games_leaderboard():
     return leaderboard_by('UpdateCount')
 
