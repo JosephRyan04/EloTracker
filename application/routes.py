@@ -5,6 +5,8 @@ from .api_call import hit_slippi_API
 from .queries import get_user, get_transactions, leaderboard_by, get_random_user
 from . import utils
 
+CORS(app, resources=r'/api/*')
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -58,7 +60,7 @@ def streak_leaderboard():
     return leaderboard_by('MaxStreak')
 
 @app.route('/api/most-games')
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+# @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def games_leaderboard():
     return leaderboard_by('UpdateCount')
 
