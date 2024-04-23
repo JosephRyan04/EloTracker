@@ -1,23 +1,24 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import  Flask, render_template, request
+from flask_cors import CORS, cross_origin
 from application import app
 from .api_call import hit_slippi_API
-from .queries import get_user, get_transactions
+from .queries import get_user, get_transactions, leaderboard_by, get_random_user
 from . import utils
 
-
+CORS(app, resources=r'/api/*')
 
 @app.route('/')
-@app.route('/index')
+@app.route('/test-route')
 def index():
-    user = {'username': 'Miguel'}
+    user = {'username': 'Wens'}
     posts = [
         {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
+            'Player': {'username': 'CWAX#450'},
+            'body': 'Rating: 3100'
         },
         {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
+            'Player': {'username': 'RARE#797'},
+            'body': 'Rating: 2450'
         }
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
@@ -49,3 +50,20 @@ def user_ranks():
     uid = request.args.get("player")
     uid = utils.format_cc(uid)
     return get_transactions(uid)
+
+@app.route('/api/top-ranked')
+def rank_leaderboard():
+    return leaderboard_by('CurrentRank')
+
+@app.route('/api/top-streak')
+def streak_leaderboard():
+    return leaderboard_by('MaxStreak')
+
+@app.route('/api/most-games')
+# @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+def games_leaderboard():
+    return leaderboard_by('UpdateCount')
+
+@app.route('/api/random-user')
+def random_user():
+    return get_random_user()

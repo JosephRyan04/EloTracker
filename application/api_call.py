@@ -53,8 +53,12 @@ def hit_slippi_API(connectCode):
 
         else:
             app.logger.info("Successfully retrieved rank")
-            #soup = BeautifulSoup(slippi_response.content, 'html.parser')
+            #soup = BeautifulSoup(slippi_response.content, 'html.parser') 
+
             response_json = json.loads(slippi_response.content)
+            if response_json['data']['getConnectCode'] is None:
+                app.logger.error("Error retrieving rank; user doesn't exist or connection refused")
+                return json.dumps({'success':False}), 404, {'ContentType':'text/html'}
 
             cleaned_data = dict()
             cleaned_data['ratingOrdinal'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['ratingOrdinal']
@@ -68,6 +72,7 @@ def hit_slippi_API(connectCode):
             
             if user_exists(cleaned_data['code']) == False:
                 add_user(cleaned_data)
+                update_user(cleaned_data)
                 add_transaction(cleaned_data)
                 return cleaned_data
             

@@ -1,6 +1,7 @@
 from application import app,db
 from application.models import User, Transaction
 import sqlalchemy as sa
+import json
 import random
 
 
@@ -37,6 +38,14 @@ def update_user(api_response):
                                                                     UpdateCount = api_response['updateCount'],
                                                                     DisplayName = api_response['displayName'])
     user = db.session.execute(query)
+    user = get_user(api_response['code'])
+    if api_response['globalRank']:
+        if user.PeakGlobal is None:
+            user.PeakGlobal = api_response['globalRank']
+        else:
+            user.PeakGlobal = min(user.PeakGlobal, api_response['globalRank'])
+        
+
     db.session.commit()
 
     return "Success"
@@ -58,6 +67,7 @@ def add_transaction(api_response):
 def get_transactions(connectCode):
     data = dict()
     data['datapoints'] = list()
+    data['timestamps'] = list()
 
     loss = 0
     last_loss = 0
@@ -65,6 +75,8 @@ def get_transactions(connectCode):
     max_streak = 0
 
     user = get_user(connectCode)
+    if user is None:
+        return 'User not found', 404, {'ContentType':'text/html'}
     for rank in user.transactions:
 
         if rank.LossCount > loss:
@@ -77,12 +89,51 @@ def get_transactions(connectCode):
             max_streak = max(max_streak, cur_streak)
 
         data['datapoints'].append((round(rank.Rank, 1)))
-
+        data['timestamps'].append(rank.Timestamp)
+    
+    data['wins'] = user.transactions[-1].WinCount
+    data['losses'] = user.transactions[-1].LossCount
+    data['code'] = user.ConnectCode
+    data['updatecount'] = user.UpdateCount
+    data['globalrank'] = user.GlobalRank
+    data['peakplacement'] = user.PeakGlobal
+    data['regionalrank'] = user.RegionalRank
+    data['continent'] = user.Continent
     data['rank'] = round(user.CurrentRank,1)
-    data['latestchange'] = data['datapoints'][-1] - data['datapoints'][-2]
+    data['latestchange'] = 0
+    if len(user.transactions) > 1: 
+        data['latestchange'] = data['datapoints'][-1] - data['datapoints'][-2]
+
+    
     data['latestchange'] = round(data['latestchange'],1)
     data['maxstreak'] = max_streak
     user.CurrentStreak = cur_streak
     user.MaxStreak = max_streak
     db.session.commit()
-    return data
+    pyJson = json.dumps(data, default=str)
+    return pyJson
+
+
+def leaderboard_by(numeric_column):
+    match numeric_column:
+        case 'UpdateCount':
+            query = sa.select(User).order_by(User.UpdateCount.desc())
+        
+        case 'MaxStreak':
+            query = sa.select(User).order_by(User.MaxStreak.desc())
+
+        case 'CurrentRank':
+            query = sa.select(User).order_by(User.CurrentRank.desc())
+    
+    leaderboard = db.session.execute(query).scalars().fetchmany(10)
+    result = list()
+    for row in leaderboard:
+        result.append(row.as_dict())
+    pyJson = json.dumps(result)
+    return pyJson
+
+def get_random_user():
+    query = sa.select(User).order_by(sa.func.random()).limit(1)
+    user = db.session.execute(query).scalar()
+    print(user.ConnectCode)
+    return json.dumps(user.ConnectCode)

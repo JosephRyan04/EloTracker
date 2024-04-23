@@ -13,6 +13,9 @@ class User(db.Model):
 
     __tablename__ = "Users"
 
+    def as_dict(self):
+       return {'code': self.ConnectCode, 'maxstreak': self.MaxStreak, 'rank': self.CurrentRank, 'gamecount': self.UpdateCount}
+
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     LastUpdate: so.Mapped[datetime] = so.mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc), onupdate=datetime.utcnow)
@@ -22,6 +25,10 @@ class User(db.Model):
     UpdateCount: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
     MaxStreak: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
     CurrentStreak: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
+    Continent: so.Mapped[str] = so.mapped_column(sqla.String(16), nullable=True)
+    GlobalRank: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
+    PeakGlobal: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
+    RegionalRank: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
     #transactions = so.Mapped[List["Transaction"]] = db.relationship()
 
     #TransactionKey: so.Mapped[Optional[int]] = so.mapped_column(sqla.ForeignKey("Transactions.id"))
@@ -43,8 +50,8 @@ class Transaction(db.Model):
         index=True, default=lambda: datetime.now(timezone.utc))
     UpdateCount: so.Mapped[int] = so.mapped_column(sqla.Integer)
     Rank: so.Mapped[float] = so.mapped_column(sqla.FLOAT)
-    WinCount: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
-    LossCount: so.Mapped[int] = so.mapped_column(sqla.Integer, nullable=True)
+    WinCount: so.Mapped[int] = so.mapped_column(sqla.Integer, default=0)
+    LossCount: so.Mapped[int] = so.mapped_column(sqla.Integer, default=0)
     user_id: so.Mapped[int] = so.mapped_column(sqla.ForeignKey("Users.id"), insert_default=-1)
     user: so.Mapped["User"] = db.relationship(back_populates="transactions")
 
