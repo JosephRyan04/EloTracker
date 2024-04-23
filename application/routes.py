@@ -8,17 +8,17 @@ from . import utils
 CORS(app, resources=r'/api/*')
 
 @app.route('/')
-@app.route('/index')
+@app.route('/test-route')
 def index():
-    user = {'username': 'Miguel'}
+    user = {'username': 'Wens'}
     posts = [
         {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
+            'Player': {'username': 'CWAX#450'},
+            'body': 'Rating: 3100'
         },
         {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
+            'Player': {'username': 'RARE#797'},
+            'body': 'Rating: 2450'
         }
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)

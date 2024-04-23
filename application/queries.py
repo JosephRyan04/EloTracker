@@ -128,7 +128,7 @@ def leaderboard_by(numeric_column):
         case 'CurrentRank':
             query = sa.select(User).order_by(User.CurrentRank.desc())
     
-    leaderboard = db.session.execute(query).scalars().fetchmany(3)
+    leaderboard = db.session.execute(query).scalars().fetchmany(10)
     result = list()
     for row in leaderboard:
         result.append(row.as_dict())
