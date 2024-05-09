@@ -16,7 +16,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 
 WORKDIR /app
-
+# Copy the source code into the container.
+COPY . .
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
 
 # Create a non-privileged user that the app will run under.
@@ -39,13 +42,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
+
 # Switch to the non-privileged user to run the application.
 USER appuser
-
-# Copy the source code into the container.
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-COPY . .
 
 # Expose the port that the application listens on.
 EXPOSE 5000
