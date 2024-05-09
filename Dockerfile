@@ -43,6 +43,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 USER appuser
 
 # Copy the source code into the container.
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 COPY . .
 
 # Expose the port that the application listens on.
