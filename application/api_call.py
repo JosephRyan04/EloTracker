@@ -67,6 +67,9 @@ def hit_slippi_API(connectCode):
             cleaned_data['updateCount'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['ratingUpdateCount']
             cleaned_data['wins'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['wins']
             cleaned_data['losses'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['losses']
+            cleaned_data['regionalRank'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['dailyRegionalPlacement']
+            cleaned_data['globalRank'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['dailyGlobalPlacement']
+            cleaned_data['continent'] = response_json['data']['getConnectCode']['user']['rankedNetplayProfile']['continent']
 
             assert cleaned_data['code'] == connectCode['cc'], "Connect code doesn't match"
             
