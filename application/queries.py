@@ -1,5 +1,6 @@
 from application import app,db
-from application.models import User, Transaction
+from application.Models.Transaction import Transaction
+from application.Models.User import User
 import sqlalchemy as sa
 import json
 import random
