@@ -2,7 +2,7 @@ from flask import  Flask, render_template, request
 from flask_cors import CORS, cross_origin
 from application import app
 from .api_call import hit_slippi_API
-from .queries import get_user, get_transactions, leaderboard_by, get_random_user
+from .queries import add_stat, get_stat, get_user, get_transactions, leaderboard_by, get_random_user
 from . import utils
 
 CORS(app, resources=r'/api/*')
@@ -67,3 +67,11 @@ def games_leaderboard():
 @app.route('/api/random-user')
 def random_user():
     return get_random_user()
+
+@app.route('/api/user-stats/<int:user_id>')
+def user_stats(user_id):
+    return get_stat(user_id)
+
+@app.route('/api/calc-stat/<int:user_id>')
+def calc_stat(user_id):
+    return add_stat(user_id)
