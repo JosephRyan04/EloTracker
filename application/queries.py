@@ -138,7 +138,7 @@ def get_random_user():
     query = sa.select(User).order_by(sa.func.random()).limit(1)
     user = db.session.execute(query).scalar()
     print(user.ConnectCode)
-    return json.dumps(user.ConnectCode)
+    return user.ConnectCode
 
 def get_stat(user_id):
     query = sa.select(Stat).where(Stat.user_id == user_id)

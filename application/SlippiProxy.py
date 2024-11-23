@@ -7,8 +7,8 @@ from .queries import add_user, add_transaction, get_user, user_exists, update_us
 
 # Perform a request for Slippi user data
 # Send data to database
-def hit_slippi_API(connectCode):
-        
+async def hit_slippi_API(connectCode):
+    # Make a POST request to Slippi's GraphQL API
 
     payload = {
         "operationName": "AccountManagementPageQuery",
@@ -52,8 +52,7 @@ def hit_slippi_API(connectCode):
             return slippi_response.status_code
 
         else:
-            app.logger.info("Successfully retrieved rank")
-            #soup = BeautifulSoup(slippi_response.content, 'html.parser') 
+            app.logger.info("Successfully retrieved rank") 
 
             response_json = json.loads(slippi_response.content)
             if response_json['data']['getConnectCode'] is None:
