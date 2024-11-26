@@ -12,10 +12,9 @@ from application import api
 CORS(app, resources=r'/api/*')
 
 # Define a namespace
-ns = api.namespace('api', description='User operations')
+ns = api.namespace('api/user', description='User operations')
 
 @ns.route('/')
-@ns.route('/test-route')
 class Index(Resource):
     def get(self):
         """Index route"""

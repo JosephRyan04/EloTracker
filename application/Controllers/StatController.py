@@ -12,13 +12,13 @@ from application import api
 CORS(app, resources=r'/api/*')
 
 # Define a namespace
-ns = api.namespace('Stat', description='User operations')
+ns = api.namespace('api/stat', description='User operations')
 
-@ns.route('/test-route')
+@ns.route('/')
 class Index(Resource):
     def get(self):
         """Index route"""
-        return render_template("Stat controller")
+        return "Stat Controller"
 
 @ns.route('/top-ranked')
 class TopRanked(Resource):
