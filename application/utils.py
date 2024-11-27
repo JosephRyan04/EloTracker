@@ -25,6 +25,5 @@ def calculate_stats(transactions: List[Transaction], user: User) -> Stat:
 
     return Stat(user_id=transactions[0].user_id,
                 MaxStreak=max_streak,
-                CurrentStreak=cur_streak,
-                PeakGlobal=max(stat.PeakGlobal, transactions[0].user_id),
-                PeakRegional=stat.PeakRegional)
+                CurrentStreak=cur_streak
+                )

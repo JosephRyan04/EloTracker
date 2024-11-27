@@ -1,4 +1,4 @@
-from requests import session
+from requests.sessions import Session
 from bs4 import BeautifulSoup
 import json
 from application import app
@@ -43,9 +43,8 @@ async def hit_slippi_API(connectCode):
         "TE": "trailer"
     }
 
-    with session() as sesh:
-
-        slippi_response = sesh.post('https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql', json=payload, headers=headers)
+    with Session() as request_session:
+        slippi_response = request_session.post('https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql', json=payload, headers=headers)
 
         if slippi_response.status_code != 200:
             app.logger.error("Error retrieving rank; user doesn't exist or connection refused: " + slippi_response.status_code)
