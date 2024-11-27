@@ -1,5 +1,7 @@
 from application import app,db
-from application.models import User, Transaction
+from application.Models.Stat import Stat
+from application.Models.Transaction import Transaction
+from application.Models.User import User
 import sqlalchemy as sa
 import json
 import random
@@ -136,4 +138,20 @@ def get_random_user():
     query = sa.select(User).order_by(sa.func.random()).limit(1)
     user = db.session.execute(query).scalar()
     print(user.ConnectCode)
-    return json.dumps(user.ConnectCode)
+    return user.ConnectCode
+
+def get_stat(user_id):
+    query = sa.select(Stat).where(Stat.user_id == user_id)
+    
+    stat = db.session.execute(query).scalar()
+    return stat.as_dict() or "Stat not found"
+
+def add_stat(stat: Stat):
+    stat = Stat(user_id=stat.user_id,
+                MaxStreak=stat.MaxStreak,
+                CurrentStreak=stat.CurrentStreak,
+                PeakGlobal=stat.PeakGlobal,
+                PeakRegional=stat.PeakRegional)
+    db.session.add(stat)
+    db.session.commit()
+    return stat.as_dict()

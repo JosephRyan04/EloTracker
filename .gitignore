@@ -2,5 +2,6 @@ migrations/versions/__pycache__/
 application/__pycache__/
 __pycache__/
 .vscode/
+/venv/
 EloTracker.code-workspace
 
